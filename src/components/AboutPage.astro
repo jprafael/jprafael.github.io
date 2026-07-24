@@ -1,0 +1,44 @@
+---
+import Common from "../layouts/Common.astro";
+import type { Locale } from "../lib/i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+---
+
+<Common locale={locale} title="Sobre nós">
+  <article class="about">
+    <header class="about-heading">
+      <p class="eyebrow" data-i18n data-pt="A nossa história" data-en="Our story">A nossa história</p>
+      <h1 data-i18n data-pt="Sobre nós" data-en="About us">Sobre nós</h1>
+    </header>
+
+    <div class="about-copy">
+      <p data-i18n data-pt={'O Grupo de Boardgamers do Porto (GBP) nasceu e cresceu de forma orgânica pelo encontro e colaboração de várias pessoas interessadas pelos jogos de tabuleiro, mais particularmente na sua expressão "moderna".'} data-en="Grupo de Boardgamers do Porto (GBP) began and grew organically as people interested in board games—particularly modern board games—met and worked together.">O Grupo de Boardgamers do Porto (GBP) nasceu e cresceu de forma orgânica pelo encontro e colaboração de várias pessoas interessadas pelos jogos de tabuleiro, mais particularmente na sua expressão "moderna".</p>
+
+      <p data-i18n data-pt="As primeiras actividades e encontros ocorreram em 2006, tendo o grupo encontrado uma forma de comunicação e divulgação no site Abre o Jogo que permitiu, a partir de Março de 2007, uma maior organização e regularidade nesses encontros." data-en="The first activities and meetups took place in 2006. The group found a way to communicate and reach more people through the Abre o Jogo website, which made the meetups more organized and regular from March 2007 onwards.">As primeiras actividades e encontros ocorreram em 2006, tendo o grupo encontrado uma forma de comunicação e divulgação no site Abre o Jogo que permitiu, a partir de Março de 2007, uma maior organização e regularidade nesses encontros.</p>
+
+      <p data-i18n data-pt={'A "casa" do grupo começou por ser numa loja dedicada aos jogos de computador em rede, torneios de Magic: The Gathering, corridas de carros telecomandados, Paintball/Airsoft e até escalada indoor... A entretanto extinta XXL. Seria ainda aí que decorreria o encontro embrionário da InvictaCon, ainda no ano de 2007. Também seria nesse evento que o grupo começaria a familiarizar-se com a esplanada do Tropical Burger, no Shopping Cristal Park.'} data-en="The group's first home was XXL, a now-closed venue dedicated to networked computer games, Magic: The Gathering tournaments, remote-controlled car racing, paintball and airsoft, and even indoor climbing. It was also where the earliest version of InvictaCon took place in 2007. During that event, the group first became acquainted with the Tropical Burger terrace at Shopping Cristal Park.">A "casa" do grupo começou por ser numa loja dedicada aos jogos de computador em rede, torneios de Magic: The Gathering, corridas de carros telecomandados, Paintball/Airsoft e até escalada indoor... A entretanto extinta XXL. Seria ainda aí que decorreria o encontro embrionário da InvictaCon, ainda no ano de 2007. Também seria nesse evento que o grupo começaria a familiarizar-se com a esplanada do Tropical Burger, no Shopping Cristal Park.</p>
+
+      <p data-i18n data-pt="Passariam para aí os encontros regulares do GBP e aí se viriam a manter durante mais de uma década." data-en="GBP's regular meetups moved there and remained at that location for more than a decade.">Passariam para aí os encontros regulares do GBP e aí se viriam a manter durante mais de uma década.</p>
+
+      <p data-i18n data-pt="O grupo foi crescendo e alargando as suas actividades, iniciando encontros mensais a partir de 2008 e também expandindo o raio de acção para encontros ocasionais em Espinho, demonstrações em espaços comerciais ou escolas... Ocorreria também em 2008 a segunda edição da InvictaCon, já com âmbito nacional e realizada em Espinho." data-en="The group continued to grow and broaden its activities. Monthly meetups began in 2008, alongside occasional gatherings in Espinho and demonstrations in shops and schools. The second InvictaCon also took place in Espinho that year, now attracting people from across the country.">O grupo foi crescendo e alargando as suas actividades, iniciando encontros mensais a partir de 2008 e também expandindo o raio de acção para encontros ocasionais em Espinho, demonstrações em espaços comerciais ou escolas... Ocorreria também em 2008 a segunda edição da InvictaCon, já com âmbito nacional e realizada em Espinho.</p>
+
+      <p data-i18n data-pt="Abrir-se-ia espaço para encontros dedicados a certos tipos de jogos, especialmente aos jogos de guerra e o grupo entraria numa fase de crescimento regular, constância nas actividades e aumento do impacto da InvictaCon, quer em termos de participantes, quer em termos de divulgação do hobby." data-en="There was now room for meetups dedicated to specific kinds of games, especially wargames. The group entered a period of steady growth and regular activity, while InvictaCon increased both its attendance and its impact in promoting the hobby.">Abrir-se-ia espaço para encontros dedicados a certos tipos de jogos, especialmente aos jogos de guerra e o grupo entraria numa fase de crescimento regular, constância nas actividades e aumento do impacto da InvictaCon, quer em termos de participantes, quer em termos de divulgação do hobby.</p>
+
+      <p data-i18n data-pt="Esse crescimento levou, em 23 de junho de 2017, à criação da Associação Grupo de Boardgamers do Porto, para permitir uma maior ligação com entidades oficiais e assim permitir o acesso a espaços que pudessem albergar a InvictaCon." data-en="This growth led to the creation of the Grupo de Boardgamers do Porto Association on 23 June 2017, enabling closer relationships with public bodies and access to venues capable of hosting InvictaCon.">Esse crescimento levou, em 23 de junho de 2017, à criação da Associação Grupo de Boardgamers do Porto, para permitir uma maior ligação com entidades oficiais e assim permitir o acesso a espaços que pudessem albergar a InvictaCon.</p>
+
+      <p data-i18n data-pt="Os anos da pandemia Covid-19 trouxeram um natural abrandamento na atividade e o cancelamento da InvictaCon em 2020 e 2021. O grupo procurou manter-se ativo através de encontros online e jogos nas plataformas existentes na internet. O encerramento do Tropical Burger obrigou à procura de espaços alternativos para os eventos semanais e mensais do Grupo." data-en="The Covid-19 pandemic naturally slowed activity and led to the cancellation of InvictaCon in 2020 and 2021. The group sought to remain active through online meetups and gaming platforms. The closure of Tropical Burger also meant finding new venues for the group's weekly and monthly events.">Os anos da pandemia Covid-19 trouxeram um natural abrandamento na atividade e o cancelamento da InvictaCon em 2020 e 2021. O grupo procurou manter-se ativo através de encontros online e jogos nas plataformas existentes na internet. O encerramento do Tropical Burger obrigou à procura de espaços alternativos para os eventos semanais e mensais do Grupo.</p>
+
+      <p data-i18n data-pt="Primeiramente, os encontros mudaram para a Associação Quebra-Dados. De momento, os encontros mensais são realizados na Casa do Alto, num espaço cedido pela Câmara Municipal da Maia." data-en="The meetups initially moved to Associação Quebra-Dados. Monthly events are currently held at Casa do Alto, in a space provided by Maia City Council.">Primeiramente, os encontros mudaram para a Associação Quebra-Dados. De momento, os encontros mensais são realizados na Casa do Alto, num espaço cedido pela Câmara Municipal da Maia.</p>
+    </div>
+  </article>
+</Common>
+
+<style>
+  .about { margin: 0 auto; max-width: 52rem; }
+  .about-heading { border-bottom: 1px solid var(--line); margin-bottom: 2.5rem; padding-bottom: 2rem; }
+  .about-heading h1 { margin-bottom: 0; }
+  .about-copy { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.2rem); }
+  .about-copy p { margin: 0 0 1.5rem; }
+  .about-copy p:first-child { color: var(--ink); font-size: clamp(1.2rem, 2.5vw, 1.5rem); font-weight: 650; }
+</style>

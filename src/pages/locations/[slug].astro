@@ -1,0 +1,9 @@
+---
+import { getCollection } from "astro:content";
+import LocationPage from "../../components/LocationPage.astro";
+export async function getStaticPaths() {
+  return (await getCollection("locations")).map((location) => ({ params: { slug: location.id }, props: { location } }));
+}
+const { location } = Astro.props;
+---
+<LocationPage location={location} locale="pt" />

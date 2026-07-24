@@ -1,0 +1,37 @@
+---
+import type { EventEntry, LocationEntry } from "../lib/events";
+import { localizedEvent, nextDate } from "../lib/events";
+import { eventPath, messages, type Locale } from "../lib/i18n";
+
+const { event, location, locale } = Astro.props as { event: EventEntry; location?: LocationEntry; locale: Locale };
+const pt = localizedEvent(event, "pt");
+const en = localizedEvent(event, "en");
+const date = nextDate(event);
+const images = event.data.images.map((image) => image.src);
+const formatDate = (language: Locale) => new Intl.DateTimeFormat(language === "pt" ? "pt-PT" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(date.start);
+---
+
+<a class="card" href={eventPath(locale, event.id)}>
+  <div class="event-media">
+    <img class="event-image" src={images[0]} data-gallery-images={JSON.stringify(images)} alt={pt.title} loading="lazy" role="button" tabindex="0" />
+    {images.length > 1 && <span class="gallery-count" aria-label={`${images.length} images`}>▧ {images.length}</span>}
+  </div>
+  <div>
+    <p class="eyebrow" data-i18n data-pt={messages.pt.types[event.data.type]} data-en={messages.en.types[event.data.type]}>{messages.pt.types[event.data.type]}</p>
+    <h3 data-i18n data-pt={pt.title} data-en={en.title}>{pt.title}</h3>
+    <p data-i18n data-pt={formatDate("pt")} data-en={formatDate("en")}>{formatDate("pt")}</p>
+    {location && <p class="location">{location.data.name}</p>}
+  </div>
+</a>
+
+<style>
+  .card { background: white; border: 1px solid var(--line); border-radius: 1rem; overflow: hidden; text-decoration: none; transition: transform .2s ease; }
+  .card:hover { transform: translateY(-4px); }
+  .event-media { aspect-ratio: 4 / 3; padding: 0; position: relative; }
+  img { height: 100%; object-fit: cover; width: 100%; }
+  .gallery-count { background: rgb(0 0 0 / .72); border-radius: 99px; color: white; font-size: .78rem; font-weight: 750; padding: .2rem .55rem; pointer-events: none; position: absolute; right: .75rem; top: .75rem; }
+  .card > div:not(.event-media) { padding: 1.25rem; }
+  h3 { font-size: 1.45rem; margin-bottom: .65rem; }
+  p { margin: .2rem 0; }
+  .location { color: var(--muted); }
+</style>

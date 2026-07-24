@@ -1,15 +1,4 @@
 ---
-import { getCollection } from "astro:content";
-import Common from "../layouts/Common.astro";
-
-const posts = await getCollection("posts", ({ data }) =>
-  import.meta.env.DEV || !data.draft
-);
+import HomePage from "../components/HomePage.astro";
 ---
-
-<Common>
-  <h1>Board Gamers Porto</h1>
-  <ul>
-    {posts.map((post) => <li><a href={`/s/${post.id}/`}>{post.data.title}</a></li>)}
-  </ul>
-</Common>
+<HomePage locale="pt" />

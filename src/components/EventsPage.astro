@@ -1,0 +1,87 @@
+---
+import Common from "../layouts/Common.astro";
+import EventCard from "./EventCard.astro";
+import EventHero from "./EventHero.astro";
+import PastEventCard from "./PastEventCard.astro";
+import { getEvents, getLocation, getLocations, isPastEvent } from "../lib/events";
+import { messages, type Locale } from "../lib/i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+const t = messages[locale];
+const events = await getEvents();
+const locations = await getLocations();
+const upcomingEvents = events.filter((event) => !isPastEvent(event));
+const pastEvents = events.filter((event) => isPastEvent(event));
+const [nextEvent, ...otherEvents] = upcomingEvents;
+const initialPastEvents = 15;
+---
+
+<Common title={t.events} locale={locale}>
+  <div class="heading">
+    <p class="eyebrow">Board Gamers Porto</p>
+    <h1 data-i18n data-pt={messages.pt.events} data-en={messages.en.events}>{messages.pt.events}</h1>
+  </div>
+  {nextEvent ? (
+    <>
+      <EventHero event={nextEvent} location={getLocation(locations, nextEvent.data.location)} locale={locale} />
+      <section>
+        <h2 data-i18n data-pt={messages.pt.upcoming} data-en={messages.en.upcoming}>{messages.pt.upcoming}</h2>
+        <div class="gallery">
+          {otherEvents.map((event) => <EventCard event={event} location={getLocation(locations, event.data.location)} locale={locale} />)}
+        </div>
+      </section>
+    </>
+  ) : <p data-i18n data-pt={messages.pt.noEvents} data-en={messages.en.noEvents}>{messages.pt.noEvents}</p>}
+  {pastEvents.length > 0 && (
+    <section class="past-events">
+      <h2 data-i18n data-pt={messages.pt.pastEvents} data-en={messages.en.pastEvents}>{messages.pt.pastEvents}</h2>
+      <div class="past-gallery">
+        {pastEvents.map((event, index) => (
+          <PastEventCard
+            event={event}
+            locale={locale}
+            deferred={index >= initialPastEvents}
+          />
+        ))}
+      </div>
+      {pastEvents.length > initialPastEvents && (
+        <button class="show-more" type="button" data-i18n data-pt={messages.pt.showMore} data-en={messages.en.showMore}>{messages.pt.showMore}</button>
+      )}
+    </section>
+  )}
+</Common>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>(".show-more");
+  const batchSize = 15;
+
+  const revealMore = () => {
+    const cards = [...document.querySelectorAll<HTMLElement>(".past-card[hidden]")].slice(0, batchSize);
+    cards.forEach((card) => {
+      card.hidden = false;
+      const image = card.querySelector<HTMLImageElement>("img[data-src]");
+      if (image?.dataset.src) {
+        image.src = image.dataset.src;
+        delete image.dataset.src;
+      }
+    });
+    if (!document.querySelector(".past-card[hidden]")) {
+      button?.remove();
+    }
+  };
+
+  button?.addEventListener("click", revealMore);
+</script>
+
+<style>
+  .heading { margin-bottom: 2rem; }
+  section { margin-top: 6rem; }
+  .gallery { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .past-gallery { display: grid; gap: .25rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .show-more { background: transparent; border: 1px solid var(--ink); border-radius: 99px; color: inherit; cursor: pointer; display: block; font: inherit; font-weight: 700; margin: 1.5rem auto 0; padding: .6rem 1rem; }
+  @media (max-width: 900px) { .past-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 680px) {
+    .gallery { grid-template-columns: 1fr; }
+    .past-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

@@ -1,0 +1,26 @@
+---
+import Common from "../layouts/Common.astro";
+import EventHero from "./EventHero.astro";
+import type { EventEntry } from "../lib/events";
+import { getLocation, getLocations } from "../lib/events";
+import { localizedEvent } from "../lib/events";
+import type { Locale } from "../lib/i18n";
+
+const { event, locale } = Astro.props as { event: EventEntry; locale: Locale };
+const locations = await getLocations();
+const copy = localizedEvent(event, locale);
+const formatDate = (start: Date, end: Date, language: Locale) => {
+  const localeCode = language === "pt" ? "pt-PT" : "en-GB";
+  return `${new Intl.DateTimeFormat(localeCode, { dateStyle: "full", timeStyle: "short" }).format(start)} — ${end.toLocaleTimeString(localeCode, { hour: "2-digit", minute: "2-digit" })}`;
+};
+---
+
+<Common title={copy.title} locale={locale}>
+  <EventHero event={event} location={getLocation(locations, event.data.location)} locale={locale} />
+</Common>
+
+<style>
+  .dates { margin: 5rem auto 0; max-width: 44rem; }
+  ul { list-style: none; padding: 0; }
+  li { border-top: 1px solid var(--line); display: flex; justify-content: space-between; padding: 1rem 0; }
+</style>

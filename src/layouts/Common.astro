@@ -3,19 +3,187 @@ const { title = "Board Gamers Porto" } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="pt">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#f4a261" />
     <link rel="icon" href="/favicon.ico" />
-    <title>{title}</title>
+    <title>{title === "Board Gamers Porto" ? title : `${title} · Board Gamers Porto`}</title>
+    <script is:inline>
+      (() => {
+        const query = new URLSearchParams(location.search).get("lang");
+        const stored = localStorage.getItem("language");
+        window.siteLanguage = query === "en" || query === "pt" ? query : stored === "en" ? "en" : "pt";
+        document.documentElement.lang = window.siteLanguage;
+      })();
+    </script>
   </head>
   <body>
+    <header>
+      <a class="brand" href="/">Board Gamers <span>Porto</span></a>
+      <nav aria-label="Main navigation">
+        <a href="/" data-i18n data-pt="Início" data-en="Home">Início</a>
+        <a href="/about/" data-i18n data-pt="Sobre" data-en="About">Sobre</a>
+        <a href="/events/" data-i18n data-pt="Eventos" data-en="Events">Eventos</a>
+        <button class="language" type="button" aria-label="Change language">EN</button>
+      </nav>
+    </header>
     <main><slot /></main>
+    <footer>
+      <p>Board Gamers Porto · {new Date().getFullYear()}</p>
+      <nav class="social-links" aria-label="Social media">
+        <a href="https://www.facebook.com/BoardgamersPorto" target="_blank" rel="noreferrer" aria-label="Board Gamers Porto on Facebook">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 8.5V7c0-.8.5-1 1-1h2.8V2.1L14.4 2C10.9 2 9 4.1 9 7v1.5H6v4.4h3V22h5v-9.1h3.4l.6-4.4H14Z" />
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/boardgamersporto/" target="_blank" rel="noreferrer" aria-label="Board Gamers Porto on Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="18" height="18" rx="5" />
+            <circle cx="12" cy="12" r="4.25" />
+            <circle class="instagram-dot" cx="17.4" cy="6.7" r="1" />
+          </svg>
+        </a>
+        <a href="https://boardgamegeek.com/profile/BoardgamersPorto" target="_blank" rel="noreferrer" aria-label="Board Gamers Porto on BoardGameGeek">
+          <svg class="bgg-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" />
+            <text x="12" y="15.1">BGG</text>
+          </svg>
+        </a>
+      </nav>
+    </footer>
+    <dialog class="image-viewer" aria-label="Event image">
+      <button class="image-viewer-close" type="button" aria-label="Close image">×</button>
+      <button class="image-viewer-previous" type="button" aria-label="Previous image">‹</button>
+      <img alt="" />
+      <button class="image-viewer-next" type="button" aria-label="Next image">›</button>
+      <span class="image-viewer-count" aria-live="polite"></span>
+    </dialog>
+    <script is:inline>
+      (() => {
+        const applyLanguage = (language, updateUrl = false) => {
+          document.documentElement.lang = language;
+          localStorage.setItem("language", language);
+          document.querySelectorAll("[data-i18n]").forEach((element) => {
+            element.textContent = element.dataset[language];
+          });
+          const button = document.querySelector(".language");
+          if (button) button.textContent = language === "pt" ? "EN" : "PT";
+          if (updateUrl) {
+            const url = new URL(location.href);
+            url.searchParams.set("lang", language);
+            history.replaceState({}, "", url);
+          }
+          window.siteLanguage = language;
+        };
+
+        applyLanguage(window.siteLanguage);
+        document.querySelector(".language")?.addEventListener("click", () => {
+          applyLanguage(window.siteLanguage === "pt" ? "en" : "pt", true);
+        });
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        const viewer = document.querySelector(".image-viewer");
+        const fullImage = viewer?.querySelector("img");
+        const closeButton = viewer?.querySelector(".image-viewer-close");
+        const previousButton = viewer?.querySelector(".image-viewer-previous");
+        const nextButton = viewer?.querySelector(".image-viewer-next");
+        const count = viewer?.querySelector(".image-viewer-count");
+        let images = [];
+        let activeImage = 0;
+
+        const showImage = (index) => {
+          if (!fullImage || images.length === 0) return;
+          activeImage = (index + images.length) % images.length;
+          fullImage.src = images[activeImage];
+          if (count) count.textContent = `${activeImage + 1} / ${images.length}`;
+          const multiple = images.length > 1;
+          previousButton?.toggleAttribute("hidden", !multiple);
+          nextButton?.toggleAttribute("hidden", !multiple);
+          count?.toggleAttribute("hidden", !multiple);
+        };
+
+        const openImage = (preview) => {
+          if (!viewer || !fullImage || !preview.dataset.galleryImages) return;
+          images = JSON.parse(preview.dataset.galleryImages);
+          fullImage.alt = preview.alt;
+          showImage(0);
+          viewer.showModal();
+        };
+
+        document.addEventListener("click", (event) => {
+          const preview = event.target.closest?.("[data-gallery-images]");
+          if (preview) {
+            event.preventDefault();
+            event.stopPropagation();
+            openImage(preview);
+          }
+        });
+
+        document.addEventListener("keydown", (event) => {
+          const preview = event.target.closest?.("[data-gallery-images]");
+          if (preview && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            openImage(preview);
+          }
+          if (viewer?.open && event.key === "ArrowLeft") showImage(activeImage - 1);
+          if (viewer?.open && event.key === "ArrowRight") showImage(activeImage + 1);
+        });
+
+        closeButton?.addEventListener("click", () => viewer.close());
+        previousButton?.addEventListener("click", () => showImage(activeImage - 1));
+        nextButton?.addEventListener("click", () => showImage(activeImage + 1));
+        viewer?.addEventListener("click", (event) => {
+          if (event.target === viewer) viewer.close();
+        });
+      })();
+    </script>
   </body>
 </html>
 
 <style is:global>
-  body { font-family: system-ui, sans-serif; line-height: 1.6; margin: 0; }
-  main { margin: 4rem auto; max-width: 42rem; padding: 0 1rem; }
+  :root { color-scheme: light; --ink: #172121; --muted: #61706c; --paper: #fffaf2; --accent: #e76f51; --gold: #f4a261; --line: #ded8ce; }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, sans-serif; line-height: 1.6; margin: 0; }
+  a { color: inherit; }
+  header { align-items: center; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; margin: auto; max-width: 76rem; padding: 1.25rem 2rem; }
+  .brand { font-size: 1.15rem; font-weight: 800; text-decoration: none; text-transform: uppercase; letter-spacing: .04em; }
+  .brand span { color: var(--accent); }
+  nav { align-items: center; display: flex; gap: 1.5rem; }
+  nav a { font-weight: 650; text-decoration: none; }
+  .language { background: transparent; border: 1px solid currentColor; border-radius: 99px; color: inherit; cursor: pointer; font: inherit; font-size: .78rem; font-weight: 700; padding: .2rem .55rem; }
+  main { margin: 0 auto; max-width: 76rem; padding: 4rem 2rem 6rem; }
+  footer { align-items: center; border-top: 1px solid var(--line); color: var(--muted); display: flex; justify-content: space-between; margin: auto; max-width: 76rem; padding: 2rem; }
+  footer p { margin: 0; }
+  .social-links { gap: .65rem; }
+  .social-links a { align-items: center; border: 1px solid var(--line); border-radius: 50%; display: flex; height: 2.5rem; justify-content: center; transition: border-color .2s, color .2s, transform .2s; width: 2.5rem; }
+  .social-links a:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .social-links a:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .social-links svg { fill: currentColor; height: 1.15rem; width: 1.15rem; }
+  .social-links rect, .social-links circle { fill: none; stroke: currentColor; stroke-width: 2; }
+  .social-links .instagram-dot { fill: currentColor; stroke: none; }
+  .social-links .bgg-icon path { fill: none; stroke: currentColor; stroke-linejoin: round; stroke-width: 1.5; }
+  .social-links .bgg-icon text { fill: currentColor; font-size: 5.2px; font-weight: 800; text-anchor: middle; }
+  h1, h2, h3 { line-height: 1.1; margin-top: 0; }
+  h1 { font-size: clamp(2.5rem, 7vw, 5.5rem); letter-spacing: -.055em; }
+  h2 { font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -.04em; }
+  img { display: block; max-width: 100%; }
+  .event-image { cursor: zoom-in; }
+  .image-viewer { background: transparent; border: 0; height: 100dvh; margin: 0; max-height: none; max-width: none; padding: 2.5rem; width: 100vw; }
+  .image-viewer[open] { align-items: center; display: flex; justify-content: center; }
+  .image-viewer::backdrop { background: rgb(8 12 12 / .94); }
+  .image-viewer img { max-height: 100%; object-fit: contain; width: auto; }
+  .image-viewer button { align-items: center; background: rgb(0 0 0 / .65); border: 1px solid rgb(255 255 255 / .35); border-radius: 50%; color: white; cursor: pointer; display: flex; justify-content: center; line-height: 1; position: fixed; z-index: 1; }
+  .image-viewer-close { font-size: 1.7rem; height: 2.5rem; right: 1rem; top: 1rem; width: 2.5rem; }
+  .image-viewer-previous, .image-viewer-next { font-size: 2.5rem; height: 3rem; top: calc(50% - 1.5rem); width: 3rem; }
+  .image-viewer-previous { left: 1rem; }
+  .image-viewer-next { right: 1rem; }
+  .image-viewer-count { background: rgb(0 0 0 / .65); border-radius: 99px; bottom: 1rem; color: white; font-weight: 700; left: 50%; padding: .35rem .7rem; position: fixed; transform: translateX(-50%); }
+  .image-viewer [hidden] { display: none; }
+  .eyebrow { color: var(--accent); font-size: .76rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+  .button { align-items: center; background: var(--ink); border-radius: 99px; color: white; display: inline-flex; font-weight: 750; gap: .5rem; padding: .75rem 1.2rem; text-decoration: none; }
+  @media (max-width: 640px) { header, main, footer { padding-left: 1rem; padding-right: 1rem; } header { align-items: flex-start; } header nav { gap: .8rem; } header nav a:not(.language) { display: none; } }
 </style>

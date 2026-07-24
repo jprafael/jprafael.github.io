@@ -1,0 +1,32 @@
+---
+import type { EventEntry } from "../lib/events";
+import { localizedEvent } from "../lib/events";
+import { eventPath, type Locale } from "../lib/i18n";
+
+const { event, locale, deferred = false } = Astro.props as {
+  event: EventEntry;
+  locale: Locale;
+  deferred?: boolean;
+};
+const pt = localizedEvent(event, "pt");
+const images = event.data.images.map((image) => image.src);
+---
+
+<a class="past-card" href={eventPath(locale, event.id)} hidden={deferred} aria-label={pt.title}>
+  <img
+    src={deferred ? undefined : images[0]}
+    data-src={deferred ? images[0] : undefined}
+    alt={pt.title}
+    loading="lazy"
+  />
+  {images.length > 1 && <span class="gallery-count" aria-label={`${images.length} images`}>▧</span>}
+</a>
+
+<style>
+  .past-card { aspect-ratio: 3 / 4; background: white; display: block; overflow: hidden; position: relative; text-decoration: none; }
+  .past-card[hidden] { display: none; }
+  img { height: 100%; object-fit: cover; transition: transform .25s ease, filter .25s ease; width: 100%; }
+  .past-card:hover img { filter: brightness(.82); transform: scale(1.025); }
+  .past-card:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; z-index: 1; }
+  .gallery-count { color: white; filter: drop-shadow(0 1px 2px rgb(0 0 0 / .8)); font-size: 1.25rem; font-weight: 800; line-height: 1; pointer-events: none; position: absolute; right: .6rem; top: .55rem; }
+</style>

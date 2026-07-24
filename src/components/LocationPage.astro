@@ -1,0 +1,31 @@
+---
+import Common from "../layouts/Common.astro";
+import type { LocationEntry } from "../lib/events";
+import { messages, type Locale } from "../lib/i18n";
+
+const { location, locale } = Astro.props as { location: LocationEntry; locale: Locale };
+const t = messages[locale];
+---
+
+<Common title={location.data.name} locale={locale}>
+  <article class="location-page">
+    <img src={location.data.image.src} alt={location.data.name} />
+    <div>
+      <p class="eyebrow" data-i18n data-pt={messages.pt.location} data-en={messages.en.location}>{messages.pt.location}</p>
+      <h1>{location.data.name}</h1>
+      <p class="address">{location.data.address}</p>
+      <h2 data-i18n data-pt={messages.pt.directions} data-en={messages.en.directions}>{messages.pt.directions}</h2>
+      <p data-i18n data-pt={location.data.directions_pt} data-en={location.data.directions_en}>{location.data.directions_pt}</p>
+      <a class="button" href={location.data.maps_url} target="_blank" rel="noreferrer"><span data-i18n data-pt={messages.pt.maps} data-en={messages.en.maps}>{messages.pt.maps}</span> ↗</a>
+    </div>
+  </article>
+</Common>
+
+<style>
+  .location-page { display: grid; gap: clamp(2rem, 6vw, 6rem); grid-template-columns: 1fr 1fr; }
+  img { border-radius: 1.5rem; height: 100%; min-height: 35rem; object-fit: cover; }
+  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+  h2 { font-size: 2rem; margin-top: 3rem; }
+  .address { color: var(--muted); font-size: 1.15rem; }
+  @media (max-width: 760px) { .location-page { grid-template-columns: 1fr; } img { min-height: 18rem; } }
+</style>

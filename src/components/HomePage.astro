@@ -1,0 +1,64 @@
+---
+import Common from "../layouts/Common.astro";
+import EventHero from "./EventHero.astro";
+import { getEvents, getLocation, getLocations, isPastEvent } from "../lib/events";
+import { eventsPath, messages, type Locale } from "../lib/i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+const t = messages[locale];
+const events = await getEvents();
+const locations = await getLocations();
+const nextEvent = events.find((event) => !isPastEvent(event));
+---
+
+<Common locale={locale}>
+  <section class="hero">
+    <img class="hero-logo" src="/favicon.ico" alt="Logótipo do Grupo de Boardgamers do Porto" />
+    <div class="hero-copy">
+      <p class="eyebrow">GBP</p>
+      <h1>Grupo de Boardgamers do Porto</h1>
+      <p
+        class="welcome"
+        data-i18n
+        data-pt="Bem-vindo!"
+        data-en="Welcome!"
+      >Bem-vindo!</p>
+      <p
+        class="description"
+        data-i18n
+        data-pt="A associação Grupo de Boardgamers do Porto (GBP) dedica-se ao estudo e divulgação dos Jogos de Tabuleiro Modernos, promovendo e dinamizando diversas actividades e eventos no Grande Porto."
+        data-en="The Grupo de Boardgamers do Porto (GBP) association is dedicated to the study and promotion of modern board games, organizing and supporting a variety of activities and events across Greater Porto."
+      >A associação Grupo de Boardgamers do Porto (GBP) dedica-se ao estudo e divulgação dos Jogos de Tabuleiro Modernos, promovendo e dinamizando diversas actividades e eventos no Grande Porto.</p>
+      <a class="button hero-cta" href="/about/">
+        <span data-i18n data-pt="Conheça a nossa história" data-en="Discover our story">Conheça a nossa história</span> →
+      </a>
+    </div>
+  </section>
+  <section>
+    <div class="section-heading">
+      <h2 data-i18n data-pt={messages.pt.nextEvent} data-en={messages.en.nextEvent}>{messages.pt.nextEvent}</h2>
+      <a href={eventsPath(locale)}><span data-i18n data-pt={messages.pt.allEvents} data-en={messages.en.allEvents}>{messages.pt.allEvents}</span> →</a>
+    </div>
+    {nextEvent
+      ? <EventHero event={nextEvent} location={getLocation(locations, nextEvent.data.location)} locale={locale} linked />
+      : <p data-i18n data-pt={messages.pt.noEvents} data-en={messages.en.noEvents}>{messages.pt.noEvents}</p>}
+  </section>
+</Common>
+
+<style>
+  .hero { align-items: center; display: grid; gap: clamp(2rem, 6vw, 5rem); grid-template-columns: minmax(12rem, 20rem) minmax(0, 1fr); padding: 2rem 0 7rem; }
+  .hero-logo { aspect-ratio: 1; height: auto; justify-self: center; width: 100%; }
+  .hero-copy { max-width: 48rem; }
+  .hero h1 { font-size: clamp(2.75rem, 6vw, 5.5rem); margin-bottom: 2rem; }
+  .welcome { color: var(--accent); font-size: 1.4rem; font-weight: 800; margin-bottom: .35rem; }
+  .description { color: var(--muted); font-size: clamp(1.05rem, 2vw, 1.3rem); margin: 0; }
+  .hero-cta { display: flex; margin-top: 2.25rem; width: fit-content; }
+  .section-heading { align-items: end; display: flex; justify-content: space-between; margin-bottom: 1.5rem; }
+  .section-heading h2 { margin-bottom: 0; }
+  .section-heading a { font-weight: 750; }
+  @media (max-width: 700px) {
+    .hero { gap: 1.5rem; grid-template-columns: 1fr; padding: 1rem 0 5rem; }
+    .hero-logo { width: min(55vw, 14rem); }
+    .hero h1 { margin-bottom: 1.5rem; }
+  }
+</style>
