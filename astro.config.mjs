@@ -49,7 +49,7 @@ export default defineConfig({
         backend: {
           name: "github",
           repo: "jprafael/boardgamersporto",
-          branch: "gh-pages-classic",
+          branch: "main",
         },
 
         media_folder: "media",
