@@ -1,6 +1,9 @@
 ---
 import Common from "../layouts/Common.astro";
 import type { Locale } from "../lib/i18n";
+import brandLogo from "../../media/about/brand-logo.webp";
+import groupPhoto from "../../media/about/group-photo-1.webp";
+import invicta2016 from "../../media/about/invicta-2016.webp";
 
 const { locale } = Astro.props as { locale: Locale };
 ---
@@ -18,7 +21,7 @@ const { locale } = Astro.props as { locale: Locale };
       <p data-i18n data-pt="As primeiras actividades e encontros ocorreram em 2006, tendo o grupo encontrado uma forma de comunicação e divulgação no site Abre o Jogo que permitiu, a partir de Março de 2007, uma maior organização e regularidade nesses encontros." data-en="The first activities and meetups took place in 2006. The group found a way to communicate and reach more people through the Abre o Jogo website, which made the meetups more organized and regular from March 2007 onwards.">As primeiras actividades e encontros ocorreram em 2006, tendo o grupo encontrado uma forma de comunicação e divulgação no site Abre o Jogo que permitiu, a partir de Março de 2007, uma maior organização e regularidade nesses encontros.</p>
 
       <figure class="story-image story-image-wide">
-        <img src="/media/about/group-photo-1.webp" alt="Grupo de Boardgamers do Porto reunido num evento" loading="lazy" />
+        <img src={groupPhoto.src} alt="Grupo de Boardgamers do Porto reunido num evento" loading="lazy" />
       </figure>
 
       <p data-i18n data-pt={'A "casa" do grupo começou por ser numa loja dedicada aos jogos de computador em rede, torneios de Magic: The Gathering, corridas de carros telecomandados, Paintball/Airsoft e até escalada indoor... A entretanto extinta XXL. Seria ainda aí que decorreria o encontro embrionário da InvictaCon, ainda no ano de 2007. Também seria nesse evento que o grupo começaria a familiarizar-se com a esplanada do Tropical Burger, no Shopping Cristal Park.'} data-en="The group's first home was XXL, a now-closed venue dedicated to networked computer games, Magic: The Gathering tournaments, remote-controlled car racing, paintball and airsoft, and even indoor climbing. It was also where the earliest version of InvictaCon took place in 2007. During that event, the group first became acquainted with the Tropical Burger terrace at Shopping Cristal Park.">A "casa" do grupo começou por ser numa loja dedicada aos jogos de computador em rede, torneios de Magic: The Gathering, corridas de carros telecomandados, Paintball/Airsoft e até escalada indoor... A entretanto extinta XXL. Seria ainda aí que decorreria o encontro embrionário da InvictaCon, ainda no ano de 2007. Também seria nesse evento que o grupo começaria a familiarizar-se com a esplanada do Tropical Burger, no Shopping Cristal Park.</p>
@@ -26,7 +29,7 @@ const { locale } = Astro.props as { locale: Locale };
       <p data-i18n data-pt="Passariam para aí os encontros regulares do GBP e aí se viriam a manter durante mais de uma década." data-en="GBP's regular meetups moved there and remained at that location for more than a decade.">Passariam para aí os encontros regulares do GBP e aí se viriam a manter durante mais de uma década.</p>
 
       <figure class="story-image story-image-portrait">
-        <img src="/media/about/invicta-2016.webp" alt="Cartaz da InvictaCon 2016" loading="lazy" />
+        <img src={invicta2016.src} alt="Cartaz da InvictaCon 2016" loading="lazy" />
       </figure>
 
       <p data-i18n data-pt="O grupo foi crescendo e alargando as suas actividades, iniciando encontros mensais a partir de 2008 e também expandindo o raio de acção para encontros ocasionais em Espinho, demonstrações em espaços comerciais ou escolas... Ocorreria também em 2008 a segunda edição da InvictaCon, já com âmbito nacional e realizada em Espinho." data-en="The group continued to grow and broaden its activities. Monthly meetups began in 2008, alongside occasional gatherings in Espinho and demonstrations in shops and schools. The second InvictaCon also took place in Espinho that year, now attracting people from across the country.">O grupo foi crescendo e alargando as suas actividades, iniciando encontros mensais a partir de 2008 e também expandindo o raio de acção para encontros ocasionais em Espinho, demonstrações em espaços comerciais ou escolas... Ocorreria também em 2008 a segunda edição da InvictaCon, já com âmbito nacional e realizada em Espinho.</p>
@@ -36,7 +39,7 @@ const { locale } = Astro.props as { locale: Locale };
       <p data-i18n data-pt="Esse crescimento levou, em 23 de junho de 2017, à criação da Associação Grupo de Boardgamers do Porto, para permitir uma maior ligação com entidades oficiais e assim permitir o acesso a espaços que pudessem albergar a InvictaCon." data-en="This growth led to the creation of the Grupo de Boardgamers do Porto Association on 23 June 2017, enabling closer relationships with public bodies and access to venues capable of hosting InvictaCon.">Esse crescimento levou, em 23 de junho de 2017, à criação da Associação Grupo de Boardgamers do Porto, para permitir uma maior ligação com entidades oficiais e assim permitir o acesso a espaços que pudessem albergar a InvictaCon.</p>
 
       <figure class="story-image story-image-logo">
-        <img src="/media/about/brand-logo.webp" alt="Logótipo do Grupo de Boardgamers do Porto" loading="lazy" />
+        <img src={brandLogo.src} alt="Logótipo do Grupo de Boardgamers do Porto" loading="lazy" />
       </figure>
 
       <p data-i18n data-pt="Os anos da pandemia Covid-19 trouxeram um natural abrandamento na atividade e o cancelamento da InvictaCon em 2020 e 2021. O grupo procurou manter-se ativo através de encontros online e jogos nas plataformas existentes na internet. O encerramento do Tropical Burger obrigou à procura de espaços alternativos para os eventos semanais e mensais do Grupo." data-en="The Covid-19 pandemic naturally slowed activity and led to the cancellation of InvictaCon in 2020 and 2021. The group sought to remain active through online meetups and gaming platforms. The closure of Tropical Burger also meant finding new venues for the group's weekly and monthly events.">Os anos da pandemia Covid-19 trouxeram um natural abrandamento na atividade e o cancelamento da InvictaCon em 2020 e 2021. O grupo procurou manter-se ativo através de encontros online e jogos nas plataformas existentes na internet. O encerramento do Tropical Burger obrigou à procura de espaços alternativos para os eventos semanais e mensais do Grupo.</p>
