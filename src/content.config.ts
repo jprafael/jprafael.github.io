@@ -8,7 +8,7 @@ const locations = defineCollection({
     name: z.string(),
     address: z.string(),
     maps_url: z.string().url(),
-    image: image(),
+    images: z.array(image()).min(1),
     directions_pt: z.string(),
     directions_en: z.string(),
   }),

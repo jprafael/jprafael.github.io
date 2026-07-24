@@ -4,12 +4,15 @@ import type { LocationEntry } from "../lib/events";
 import { messages, type Locale } from "../lib/i18n";
 
 const { location, locale } = Astro.props as { location: LocationEntry; locale: Locale };
-const t = messages[locale];
+const images = location.data.images.map((image) => image.src);
 ---
 
 <Common title={location.data.name} locale={locale}>
   <article class="location-page">
-    <img src={location.data.image.src} alt={location.data.name} />
+    <div class="location-image">
+      <img class="event-image" src={images[0]} data-gallery-images={JSON.stringify(images)} alt={location.data.name} role="button" tabindex="0" />
+      {images.length > 1 && <span class="gallery-count" aria-label={`${images.length} images`}>▧ {images.length}</span>}
+    </div>
     <div>
       <p class="eyebrow" data-i18n data-pt={messages.pt.location} data-en={messages.en.location}>{messages.pt.location}</p>
       <h1>{location.data.name}</h1>
@@ -23,7 +26,8 @@ const t = messages[locale];
 
 <style>
   .location-page { display: grid; gap: clamp(2rem, 6vw, 6rem); grid-template-columns: 1fr 1fr; }
-  img { border-radius: 1.5rem; height: 100%; min-height: 35rem; object-fit: cover; }
+  .location-image { min-width: 0; position: relative; }
+  img { border-radius: 1.5rem; height: 100%; min-height: 35rem; object-fit: cover; width: 100%; }
   h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
   h2 { font-size: 2rem; margin-top: 3rem; }
   .address { color: var(--muted); font-size: 1.15rem; }
