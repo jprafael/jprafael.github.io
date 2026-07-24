@@ -2,14 +2,6 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { sveltiaLoader } from "astro-loader-sveltia-cms/loader";
 
-const posts = defineCollection({
-  loader: sveltiaLoader("posts"),
-  schema: z.object({
-    title: z.string(),
-    draft: z.boolean().default(false),
-  }),
-});
-
 const locations = defineCollection({
   loader: sveltiaLoader("locations"),
   schema: ({ image }) => z.object({
@@ -42,4 +34,4 @@ const events = defineCollection({
   }),
 });
 
-export const collections = { posts, events, locations };
+export const collections = { events, locations };

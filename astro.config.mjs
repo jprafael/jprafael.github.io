@@ -52,18 +52,6 @@ export default defineConfig({
               { label: "Directions (EN)", name: "directions_en", widget: "text" },
             ],
           },
-          {
-            name: "posts",
-            label: "Posts",
-            folder: "posts",
-            create: true,
-            preview_path: "s/{{slug}}/",
-            fields: [
-              { label: "Title", name: "title", widget: "string" },
-              { label: "Draft", name: "draft", widget: "boolean", default: false },
-              { label: "Body", name: "body", widget: "markdown" },
-            ],
-          },
         ],
       },
     }),

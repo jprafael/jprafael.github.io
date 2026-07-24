@@ -4,12 +4,14 @@ import EventCard from "./EventCard.astro";
 import EventHero from "./EventHero.astro";
 import PastEventCard from "./PastEventCard.astro";
 import { getEvents, getLocation, getLocations, isPastEvent } from "../lib/events";
-import { messages, type Locale } from "../lib/i18n";
+import { locationPath, messages, type Locale } from "../lib/i18n";
 
 const { locale } = Astro.props as { locale: Locale };
 const t = messages[locale];
 const events = await getEvents();
 const locations = await getLocations();
+const weeklyLocation = getLocation(locations, { id: "ponto-2" });
+const monthlyLocation = getLocation(locations, { id: "casa-do-alto" });
 const upcomingEvents = events.filter((event) => !isPastEvent(event));
 const pastEvents = events.filter((event) => isPastEvent(event));
 const [nextEvent, ...otherEvents] = upcomingEvents;
@@ -18,20 +20,54 @@ const initialPastEvents = 15;
 
 <Common title={t.events} locale={locale}>
   <div class="heading">
-    <p class="eyebrow">Board Gamers Porto</p>
+    <p class="eyebrow">Boardgamers Porto</p>
     <h1 data-i18n data-pt={messages.pt.events} data-en={messages.en.events}>{messages.pt.events}</h1>
   </div>
-  {nextEvent ? (
-    <>
-      <EventHero event={nextEvent} location={getLocation(locations, nextEvent.data.location)} locale={locale} />
-      <section>
-        <h2 data-i18n data-pt={messages.pt.upcoming} data-en={messages.en.upcoming}>{messages.pt.upcoming}</h2>
-        <div class="gallery">
-          {otherEvents.map((event) => <EventCard event={event} location={getLocation(locations, event.data.location)} locale={locale} />)}
-        </div>
-      </section>
-    </>
-  ) : <p data-i18n data-pt={messages.pt.noEvents} data-en={messages.en.noEvents}>{messages.pt.noEvents}</p>}
+  {nextEvent && (
+    <div class="next-event">
+      <EventHero event={nextEvent} location={getLocation(locations, nextEvent.data.location)} locale={locale} linked />
+    </div>
+  )}
+  <div class="events-overview">
+    <div class="description">
+      <p class="lead" data-i18n data-pt={messages.pt.eventsDescription} data-en={messages.en.eventsDescription}>{messages.pt.eventsDescription}</p>
+      <p class="open-and-free" data-i18n data-pt={messages.pt.eventsOpenAndFree} data-en={messages.en.eventsOpenAndFree}>{messages.pt.eventsOpenAndFree}</p>
+      <p data-i18n data-pt={messages.pt.eventsVariety} data-en={messages.en.eventsVariety}>{messages.pt.eventsVariety}</p>
+      <p class="contact-line">
+        <span data-i18n data-pt={messages.pt.eventsContactPrefix} data-en={messages.en.eventsContactPrefix}>{messages.pt.eventsContactPrefix}</span>{" "}
+        <a href="/contact/" data-i18n data-pt={messages.pt.eventsContactLink} data-en={messages.en.eventsContactLink}>{messages.pt.eventsContactLink}</a>.
+      </p>
+    </div>
+    <section class="regular-events" aria-labelledby="regular-events-title">
+      <h2 id="regular-events-title" data-i18n data-pt={messages.pt.regularEvents} data-en={messages.en.regularEvents}>{messages.pt.regularEvents}</h2>
+      <div class="schedule">
+        <article>
+          <p class="eyebrow" data-i18n data-pt={messages.pt.types.Weekly} data-en={messages.en.types.Weekly}>{messages.pt.types.Weekly}</p>
+          <h3>
+            <span data-i18n data-pt={messages.pt.weeklySchedule} data-en={messages.en.weeklySchedule}>{messages.pt.weeklySchedule}</span>
+            <small data-i18n data-pt={messages.pt.weeklyTime} data-en={messages.en.weeklyTime}>{messages.pt.weeklyTime}</small>
+          </h3>
+          {weeklyLocation && <p><span data-i18n data-pt={messages.pt.atLocation} data-en={messages.en.atLocation}>{messages.pt.atLocation}</span> <a href={locationPath(locale, weeklyLocation.id)}><strong>{weeklyLocation.data.name}</strong></a></p>}
+        </article>
+        <article>
+          <p class="eyebrow" data-i18n data-pt={messages.pt.types.Monthly} data-en={messages.en.types.Monthly}>{messages.pt.types.Monthly}</p>
+          <h3>
+            <span data-i18n data-pt={messages.pt.monthlySchedule} data-en={messages.en.monthlySchedule}>{messages.pt.monthlySchedule}</span>
+            <small data-i18n data-pt={messages.pt.monthlyTime} data-en={messages.en.monthlyTime}>{messages.pt.monthlyTime}</small>
+          </h3>
+          {monthlyLocation && <p><span data-i18n data-pt={messages.pt.atLocation} data-en={messages.en.atLocation}>{messages.pt.atLocation}</span> <a href={locationPath(locale, monthlyLocation.id)}><strong>{monthlyLocation.data.name}</strong></a></p>}
+        </article>
+      </div>
+    </section>
+  </div>
+  {otherEvents.length > 0 && (
+    <section>
+      <h2 data-i18n data-pt={messages.pt.upcoming} data-en={messages.en.upcoming}>{messages.pt.upcoming}</h2>
+      <div class="gallery">
+        {otherEvents.map((event) => <EventCard event={event} location={getLocation(locations, event.data.location)} locale={locale} />)}
+      </div>
+    </section>
+  )}
   {pastEvents.length > 0 && (
     <section class="past-events">
       <h2 data-i18n data-pt={messages.pt.pastEvents} data-en={messages.en.pastEvents}>{messages.pt.pastEvents}</h2>
@@ -74,13 +110,33 @@ const initialPastEvents = 15;
 </script>
 
 <style>
-  .heading { margin-bottom: 2rem; }
+  .heading { margin-bottom: 3rem; }
+  .heading h1 { margin-bottom: 0; }
+  .next-event { margin-bottom: 6rem; }
+  .events-overview { width: 100%; }
+  .description { background: white; border-radius: 1rem; color: var(--ink); font-size: 1.05rem; margin-inline: auto; max-width: 48rem; padding: clamp(1.25rem, 3vw, 2rem); }
+  .description p { margin: 0 0 1rem; }
+  .description p:last-child { margin-bottom: 0; }
+  .description .lead { color: var(--ink); font-size: clamp(1.2rem, 2vw, 1.45rem); font-weight: 650; line-height: 1.5; }
+  .description .open-and-free { background: #fbe2b8; border-left: 4px solid var(--accent); border-radius: 0 .5rem .5rem 0; color: var(--ink); font-weight: 700; margin: 1.5rem 0; padding: 1rem 1.25rem; }
+  .description .contact-line { color: var(--muted); font-size: .95rem; }
+  .description a { color: var(--ink); font-weight: 700; }
   section { margin-top: 6rem; }
+  .regular-events { border-top: 1px solid var(--line); margin-top: 2.5rem; padding-top: 2.5rem; }
+  .regular-events h2 { font-size: clamp(1.75rem, 3vw, 2.5rem); }
+  .schedule { display: grid; gap: 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .schedule article { background: white; border: 1px solid var(--line); border-radius: 1rem; padding: 1.5rem; }
+  .schedule h3 { font-size: clamp(1.2rem, 2vw, 1.55rem); margin-bottom: .75rem; }
+  .schedule h3 small { display: block; font: inherit; }
+  .schedule a { text-underline-offset: .18em; }
+  .schedule p { margin-bottom: 0; }
+  .schedule .eyebrow { margin-top: 0; }
   .gallery { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .past-gallery { display: grid; gap: .25rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .show-more { background: transparent; border: 1px solid var(--ink); border-radius: 99px; color: inherit; cursor: pointer; display: block; font: inherit; font-weight: 700; margin: 1.5rem auto 0; padding: .6rem 1rem; }
   @media (max-width: 900px) { .past-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 680px) {
+    .schedule { grid-template-columns: 1fr; }
     .gallery { grid-template-columns: 1fr; }
     .past-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }

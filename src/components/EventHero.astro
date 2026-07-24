@@ -24,7 +24,9 @@ const formatDate = (language: Locale) => {
   </div>
   <div class="event-copy">
     <p class="eyebrow"><span data-i18n data-pt={messages.pt.types[event.data.type]} data-en={messages.en.types[event.data.type]}>{messages.pt.types[event.data.type]}</span> · <span data-i18n data-pt={past ? messages.pt.pastEvent : messages.pt.nextEvent} data-en={past ? messages.en.pastEvent : messages.en.nextEvent}>{past ? messages.pt.pastEvent : messages.pt.nextEvent}</span></p>
-    <h1 data-i18n data-pt={pt.title} data-en={en.title}>{pt.title}</h1>
+    {linked
+      ? <h2 data-i18n data-pt={pt.title} data-en={en.title}>{pt.title}</h2>
+      : <h1 data-i18n data-pt={pt.title} data-en={en.title}>{pt.title}</h1>}
     <p class="date" data-i18n data-pt={formatDate("pt")} data-en={formatDate("en")}>{formatDate("pt")}</p>
     {location && <p><span data-i18n data-pt={messages.pt.location} data-en={messages.en.location}>{messages.pt.location}</span>: <a href={locationPath(locale, location.id)}>{location.data.name}</a></p>}
     <p class="description" data-i18n data-pt={pt.description} data-en={en.description}>{pt.description}</p>
@@ -33,12 +35,12 @@ const formatDate = (language: Locale) => {
 </article>
 
 <style>
-  .event-hero { background: white; border: 1px solid var(--line); border-radius: 1.5rem; display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(24rem, 1.2fr); overflow: hidden; }
+  .event-hero { background: white; border: 2px solid var(--ink); border-radius: 1.5rem; box-shadow: .5rem .5rem 0 var(--gold); display: grid; grid-template-columns: minmax(16rem, .8fr) minmax(24rem, 1.2fr); overflow: hidden; }
   .event-media { min-height: 32rem; position: relative; }
   img { height: 100%; inset: 0; object-fit: cover; position: absolute; width: 100%; }
   .gallery-count { background: rgb(0 0 0 / .72); border-radius: 99px; color: white; font-size: .85rem; font-weight: 750; padding: .3rem .65rem; pointer-events: none; position: absolute; right: 1rem; top: 1rem; }
   .event-copy { align-self: center; padding: clamp(2rem, 5vw, 4rem); }
-  h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+  h1, h2 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
   .date { font-size: 1.15rem; font-weight: 750; }
   .description { white-space: pre-line; }
   @media (max-width: 800px) { .event-hero { grid-template-columns: 1fr; } .event-media { min-height: 18rem; } }
