@@ -48,7 +48,7 @@ export default defineConfig({
       config: {
         backend: {
           name: "github",
-          repo: "jprafael/boardgamersporto",
+          repo: "jprafael/jprafael.github.io",
           branch: "main",
         },
 
