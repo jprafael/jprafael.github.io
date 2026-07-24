@@ -1,0 +1,69 @@
+---
+import Common from "../layouts/Common.astro";
+import { getEvents, localizedEvent } from "../lib/events";
+import { eventPath, messages, type Locale } from "../lib/i18n";
+
+const { locale } = Astro.props as { locale: Locale };
+const invictacons = (await getEvents()).filter((event) => event.data.type === "InvictaCon");
+---
+
+<Common title="InvictaCon" locale={locale}>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">Boardgamers Porto</p>
+      <h1>InvictaCon</h1>
+      <p class="tagline" data-i18n data-pt={messages.pt.invictaconTagline} data-en={messages.en.invictaconTagline}>{messages.pt.invictaconTagline}</p>
+    </div>
+    {invictacons[0] && <img src={invictacons[0].data.images[0].src} alt={localizedEvent(invictacons[0], "pt").title} />}
+  </section>
+
+  <section class="about-invictacon">
+    <p class="lead" data-i18n data-pt={messages.pt.invictaconIntro} data-en={messages.en.invictaconIntro}>{messages.pt.invictaconIntro}</p>
+    <div class="copy-columns">
+      <p data-i18n data-pt={messages.pt.invictaconWelcome} data-en={messages.en.invictaconWelcome}>{messages.pt.invictaconWelcome}</p>
+      <p data-i18n data-pt={messages.pt.invictaconMore} data-en={messages.en.invictaconMore}>{messages.pt.invictaconMore}</p>
+    </div>
+  </section>
+
+  <section class="archive">
+    <p class="eyebrow">InvictaCon</p>
+    <h2 data-i18n data-pt={messages.pt.previousInvictacons} data-en={messages.en.previousInvictacons}>{messages.pt.previousInvictacons}</h2>
+    <div class="poster-grid">
+      {invictacons.map((event) => {
+        const pt = localizedEvent(event, "pt");
+        const en = localizedEvent(event, "en");
+        return (
+          <a href={eventPath(locale, event.id)}>
+            <img src={event.data.images[0].src} alt={pt.title} loading="lazy" />
+            <h3 data-i18n data-pt={pt.title} data-en={en.title}>{pt.title}</h3>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+</Common>
+
+<style>
+  .hero { align-items: center; display: grid; gap: clamp(2rem, 7vw, 6rem); grid-template-columns: minmax(0, 1fr) minmax(14rem, 24rem); padding-bottom: 5rem; }
+  .hero h1 { margin-bottom: 1rem; }
+  .tagline { color: var(--accent); font-size: clamp(1.3rem, 2.4vw, 1.8rem); font-weight: 750; line-height: 1.35; max-width: 42rem; }
+  .hero img { aspect-ratio: 3 / 4; border-radius: .4rem; box-shadow: 0 1.5rem 3rem rgb(23 33 33 / .18); height: min(32rem, 55vw); justify-self: center; object-fit: cover; }
+  .about-invictacon { background: white; border-radius: 1rem; padding: clamp(1.5rem, 5vw, 3.5rem); }
+  .lead { font-size: clamp(1.25rem, 2.5vw, 1.65rem); font-weight: 650; line-height: 1.5; margin: 0 0 2rem; max-width: 62rem; }
+  .copy-columns { color: var(--muted); column-gap: 3rem; display: grid; font-size: 1.05rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .copy-columns p { margin: 0; }
+  .archive { margin-top: 6rem; }
+  .archive h2 { margin-bottom: 2rem; }
+  .poster-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .poster-grid a { background: white; border: 1px solid var(--line); border-radius: .75rem; overflow: hidden; text-decoration: none; transition: transform .2s ease; }
+  .poster-grid a:hover { transform: translateY(-4px); }
+  .poster-grid img { aspect-ratio: 3 / 4; height: auto; object-fit: cover; width: 100%; }
+  .poster-grid h3 { font-size: 1rem; margin: 0; padding: .8rem; text-align: center; }
+  @media (max-width: 900px) { .poster-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (max-width: 680px) {
+    .hero { grid-template-columns: 1fr; padding-bottom: 3.5rem; }
+    .hero img { height: auto; width: min(75vw, 20rem); }
+    .copy-columns { gap: 1rem; grid-template-columns: 1fr; }
+    .poster-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

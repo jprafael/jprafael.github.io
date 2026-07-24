@@ -57,6 +57,14 @@ const initialPastEvents = 15;
           </h3>
           {monthlyLocation && <p><span data-i18n data-pt={messages.pt.atLocation} data-en={messages.en.atLocation}>{messages.pt.atLocation}</span> <a href={locationPath(locale, monthlyLocation.id)}><strong>{monthlyLocation.data.name}</strong></a></p>}
         </article>
+        <article class="invictacon-card">
+          <div>
+            <p class="eyebrow">InvictaCon</p>
+            <h3 data-i18n data-pt={messages.pt.invictaconTagline} data-en={messages.en.invictaconTagline}>{messages.pt.invictaconTagline}</h3>
+            <p data-i18n data-pt={messages.pt.invictaconCardCopy} data-en={messages.en.invictaconCardCopy}>{messages.pt.invictaconCardCopy}</p>
+          </div>
+          <a class="button" href="/invictacon/"><span data-i18n data-pt={messages.pt.discoverInvictacon} data-en={messages.en.discoverInvictacon}>{messages.pt.discoverInvictacon}</span> →</a>
+        </article>
       </div>
     </section>
   </div>
@@ -131,12 +139,17 @@ const initialPastEvents = 15;
   .schedule a { text-underline-offset: .18em; }
   .schedule p { margin-bottom: 0; }
   .schedule .eyebrow { margin-top: 0; }
+  .schedule .invictacon-card { align-items: center; background: var(--ink); border-color: var(--ink); color: white; display: flex; gap: 2rem; grid-column: 1 / -1; justify-content: space-between; padding: clamp(1.5rem, 4vw, 2.5rem); }
+  .invictacon-card h3 { font-size: clamp(1.65rem, 3vw, 2.5rem); max-width: 40rem; }
+  .invictacon-card div > p:last-child { color: #dce3e1; margin: 0; max-width: 46rem; }
+  .invictacon-card .button { background: var(--gold); color: var(--ink); flex: none; }
   .gallery { display: grid; gap: 1.5rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .past-gallery { display: grid; gap: .25rem; grid-template-columns: repeat(5, minmax(0, 1fr)); }
   .show-more { background: transparent; border: 1px solid var(--ink); border-radius: 99px; color: inherit; cursor: pointer; display: block; font: inherit; font-weight: 700; margin: 1.5rem auto 0; padding: .6rem 1rem; }
   @media (max-width: 900px) { .past-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
   @media (max-width: 680px) {
     .schedule { grid-template-columns: 1fr; }
+    .schedule .invictacon-card { align-items: flex-start; flex-direction: column; }
     .gallery { grid-template-columns: 1fr; }
     .past-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
