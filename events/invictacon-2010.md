@@ -4,7 +4,7 @@ title_en: InvictaCon 2010
 type: InvictaCon
 location: cristal-park
 images:
-  - /media/events/invictacon-2010.webp
+  - /media/events/invictacon/2010/1.webp
 dates:
   - start: 2010-09-11T10:00:00+01:00
     end: 2010-09-11T23:00:00+01:00

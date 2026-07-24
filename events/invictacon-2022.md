@@ -4,7 +4,7 @@ title_en: InvictaCon 2022
 type: InvictaCon
 location: pavilhao-multiusos-gondomar
 images:
-  - /media/events/invictacon-2022.webp
+  - /media/events/invictacon/2022/1.webp
 dates:
   - start: 2022-12-09T10:00:00+00:00
     end: 2022-12-10T02:00:00+00:00

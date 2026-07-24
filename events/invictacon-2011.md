@@ -4,7 +4,7 @@ title_en: InvictaCon 2011
 type: InvictaCon
 location: eurostars-oporto
 images:
-  - /media/events/invictacon-2011.webp
+  - /media/events/invictacon/2011/1.webp
 dates:
   - start: 2011-10-08T10:00:00+01:00
     end: 2011-10-08T23:00:00+01:00

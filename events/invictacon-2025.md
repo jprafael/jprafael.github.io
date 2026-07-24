@@ -4,7 +4,7 @@ title_en: InvictaCon 2025
 type: InvictaCon
 location: faculdade-economia-porto
 images:
-  - /media/events/invictacon-2025.webp
+  - /media/events/invictacon/2025/1.webp
 dates:
   - start: 2025-12-06T10:00:00+00:00
     end: 2025-12-07T02:00:00+00:00

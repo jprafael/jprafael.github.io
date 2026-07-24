@@ -4,7 +4,7 @@ title_en: InvictaCon 2015
 type: InvictaCon
 location: projectarte-rio-tinto
 images:
-  - /media/events/invictacon-2015.webp
+  - /media/events/invictacon/2015/1.webp
 dates:
   - start: 2015-10-02T10:00:00+01:00
     end: 2015-10-03T02:00:00+01:00

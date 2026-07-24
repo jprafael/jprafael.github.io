@@ -1,13 +1,15 @@
 import { defineConfig } from "astro/config";
 import sveltia from "astro-loader-sveltia-cms";
 
-const eventCollection = ({ name, label, type, slug }) => ({
+const eventCollection = ({ name, label, type, slug, mediaFolder }) => ({
   name,
   label,
   folder: "events",
   create: true,
   filter: { field: "type", value: type },
   slug,
+  media_folder: mediaFolder,
+  public_folder: `/${mediaFolder}`,
   summary: "**{{title_pt}}** — `{{filename}}`",
   thumbnail: "images.*",
   preview_path: "events/{{slug}}/",
@@ -42,16 +44,17 @@ export default defineConfig({
         },
         media_folder: "media",
         collections: [
-          eventCollection({ name: "events", label: "Weekly Events", type: "Weekly", slug: "weekly-{{dates.0.start | date('YYYY-MM-DD')}}" }),
-          eventCollection({ name: "monthly-events", label: "Monthly Events", type: "Monthly", slug: "monthly-{{dates.0.start | date('YYYY-MM-DD')}}" }),
-          eventCollection({ name: "invictacon-events", label: "InvictaCon", type: "InvictaCon", slug: "invictacon-{{dates.0.start | date('YYYY')}}" }),
+          eventCollection({ name: "events", label: "Weekly Events", type: "Weekly", slug: "weekly-{{dates.0.start | date('YYYY-MM-DD')}}", mediaFolder: "media/events/weekly/{{dates.0.start | date('YYYY-MM-DD')}}" }),
+          eventCollection({ name: "monthly-events", label: "Monthly Events", type: "Monthly", slug: "monthly-{{dates.0.start | date('YYYY-MM-DD')}}", mediaFolder: "media/events/monthly/{{dates.0.start | date('YYYY-MM-DD')}}" }),
+          eventCollection({ name: "invictacon-events", label: "InvictaCon", type: "InvictaCon", slug: "invictacon-{{dates.0.start | date('YYYY')}}", mediaFolder: "media/events/invictacon/{{dates.0.start | date('YYYY')}}" }),
           {
             name: "locations",
             label: "Locations",
             folder: "locations",
             create: true,
             identifier_field: "name",
-            summary: "{{name}}",
+            summary: "**{{name}}** — `{{filename}}`",
+            thumbnail: "images.*",
             preview_path: "locations/{{slug}}/",
             fields: [
               { label: "Name", name: "name", widget: "string" },

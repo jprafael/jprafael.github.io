@@ -4,7 +4,7 @@ title_en: InvictaCon 2019
 type: InvictaCon
 location: pavilhao-multiusos-gondomar
 images:
-  - /media/events/invictacon-2019.webp
+  - /media/events/invictacon/2019/1.webp
 dates:
   - start: 2019-11-08T10:00:00+00:00
     end: 2019-11-09T02:00:00+00:00

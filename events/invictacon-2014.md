@@ -4,7 +4,7 @@ title_en: InvictaCon 2014
 type: InvictaCon
 location: centro-cultural-rio-tinto
 images:
-  - /media/events/invictacon-2014.webp
+  - /media/events/invictacon/2014/1.webp
 dates:
   - start: 2014-10-03T10:00:00+01:00
     end: 2014-10-04T02:00:00+01:00

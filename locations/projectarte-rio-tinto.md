@@ -3,7 +3,7 @@ name: Project'Arte
 address: Rio Tinto, Gondomar
 maps_url: https://maps.google.com/?q=ProjectArte+Rio+Tinto
 images:
-  - /media/events/invictacon-2015.webp
+  - /media/events/invictacon/2015/1.webp
 directions_pt: Consulte o mapa para planear a viagem.
 directions_en: Check the map to plan your journey.
 ---

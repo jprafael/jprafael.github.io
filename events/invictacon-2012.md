@@ -4,7 +4,7 @@ title_en: InvictaCon 2012
 type: InvictaCon
 location: eurostars-oporto
 images:
-  - /media/events/invictacon-2012.webp
+  - /media/events/invictacon/2012/1.webp
 dates:
   - start: 2012-10-05T10:00:00+01:00
     end: 2012-10-06T02:00:00+01:00

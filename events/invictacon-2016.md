@@ -4,7 +4,7 @@ title_en: InvictaCon 2016
 type: InvictaCon
 location: universidade-portucalense
 images:
-  - /media/events/invictacon-2016.webp
+  - /media/events/invictacon/2016/1.webp
 dates:
   - start: 2016-10-07T10:00:00+01:00
     end: 2016-10-08T02:00:00+01:00

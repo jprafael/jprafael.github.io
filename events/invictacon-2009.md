@@ -4,7 +4,7 @@ title_en: InvictaCon 2009
 type: InvictaCon
 location: fundacao-jose-rodrigues
 images:
-  - /media/events/invictacon-2009.webp
+  - /media/events/invictacon/2009/1.webp
 dates:
   - start: 2009-09-12T10:00:00+01:00
     end: 2009-09-12T23:00:00+01:00
