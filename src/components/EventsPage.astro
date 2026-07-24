@@ -14,7 +14,7 @@ const weeklyLocation = getLocation(locations, { id: "ponto-2" });
 const monthlyLocation = getLocation(locations, { id: "casa-do-alto" });
 const upcomingEvents = events.filter((event) => !isPastEvent(event));
 const pastEvents = events.filter((event) => isPastEvent(event));
-const [nextEvent, ...otherEvents] = upcomingEvents;
+const [nextEvent] = upcomingEvents;
 const initialPastEvents = 15;
 ---
 
@@ -68,11 +68,11 @@ const initialPastEvents = 15;
       </div>
     </section>
   </div>
-  {otherEvents.length > 0 && (
+  {upcomingEvents.length > 0 && (
     <section>
       <h2 data-i18n data-pt={messages.pt.upcoming} data-en={messages.en.upcoming}>{messages.pt.upcoming}</h2>
       <div class="gallery">
-        {otherEvents.map((event) => <EventCard event={event} location={getLocation(locations, event.data.location)} locale={locale} />)}
+        {upcomingEvents.map((event) => <EventCard event={event} location={getLocation(locations, event.data.location)} locale={locale} />)}
       </div>
     </section>
   )}
