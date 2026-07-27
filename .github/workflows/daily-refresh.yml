@@ -1,0 +1,55 @@
+name: Daily website refresh
+
+on:
+  schedule:
+    # GitHub schedules use UTC. Lisbon midnight is 00:00 UTC in winter and
+    # 23:00 UTC on the previous day while daylight saving time is active.
+    - cron: "0 0 * * *"
+    - cron: "0 23 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  check-lisbon-midnight:
+    runs-on: ubuntu-latest
+    outputs:
+      should-refresh: ${{ steps.check.outputs.should-refresh }}
+    steps:
+      - id: check
+        name: Check the Lisbon UTC offset
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should-refresh=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ "$SCHEDULE" == "0 23 * * *" ]]; then
+            scheduled_hour="23"
+            expected_offset="+0100"
+          else
+            scheduled_hour="00"
+            expected_offset="+0000"
+          fi
+
+          scheduled_at="$(date -u -d "today $scheduled_hour:00" +%s)"
+          if (( scheduled_at > $(date -u +%s) )); then
+            scheduled_at="$(date -u -d "yesterday $scheduled_hour:00" +%s)"
+          fi
+
+          lisbon_offset="$(TZ=Europe/Lisbon date -d "@$scheduled_at" +%z)"
+          if [[ "$lisbon_offset" == "$expected_offset" ]]; then
+            echo "should-refresh=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "should-refresh=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  refresh:
+    needs: check-lisbon-midnight
+    if: needs.check-lisbon-midnight.outputs.should-refresh == 'true'
+    uses: ./.github/workflows/deploy.yml
